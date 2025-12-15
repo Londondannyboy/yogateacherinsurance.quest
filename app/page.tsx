@@ -586,7 +586,7 @@ export default function HomePage() {
       </section>
 
       {/* Articles & Resources Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-slate-800/30">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-bold text-white text-center mb-4">
             Expert Articles & Guides
@@ -596,40 +596,95 @@ export default function HomePage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="/articles/yoga-insurance-costs-guide" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Insurance Costs Guide</h3>
-              <p className="text-sm text-slate-400">Complete breakdown of yoga teacher insurance pricing, factors affecting costs, and budgeting tips.</p>
-              <div className="text-xs text-blue-400 mt-4">Read Guide →</div>
+            <a href="/articles/yoga-insurance-costs-guide" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-blue-500/50">
+              <div className="relative h-48 overflow-hidden bg-slate-700">
+                <img
+                  src="https://images.unsplash.com/photo-1542654291-526a40ef6050?w=600&h=400&crop=entropy"
+                  alt="yoga teacher insurance costs 2025 UK pricing guide budget breakdown"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Insurance Costs Guide</h3>
+                <p className="text-sm text-slate-400 mb-4">Complete breakdown of yoga teacher insurance pricing, factors affecting costs, and budgeting tips.</p>
+                <div className="text-xs text-blue-400">Read Guide →</div>
+              </div>
             </a>
 
-            <a href="/articles/hot-yoga-insurance-coverage" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Hot Yoga Insurance</h3>
-              <p className="text-sm text-slate-400">Specialized coverage for heated yoga classes, Bikram yoga, and heat-related injury protection.</p>
-              <div className="text-xs text-blue-400 mt-4">Read Guide →</div>
+            <a href="/articles/hot-yoga-insurance-coverage" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-orange-500/50">
+              <div className="relative h-48 overflow-hidden bg-slate-700">
+                <img
+                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=400&crop=entropy"
+                  alt="hot yoga insurance bikram yoga heated class coverage requirements"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-orange-400 group-hover:text-orange-300 mb-2">Hot Yoga Insurance</h3>
+                <p className="text-sm text-slate-400 mb-4">Specialized coverage for heated yoga classes, Bikram yoga, and heat-related injury protection.</p>
+                <div className="text-xs text-orange-400">Read Guide →</div>
+              </div>
             </a>
 
-            <a href="/articles/aerial-yoga-insurance-explained" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Aerial Yoga Insurance</h3>
-              <p className="text-sm text-slate-400">Protection for suspension equipment, inversion classes, and high-risk aerial yoga practices.</p>
-              <div className="text-xs text-blue-400 mt-4">Read Guide →</div>
+            <a href="/articles/aerial-yoga-insurance-explained" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-purple-500/50">
+              <div className="relative h-48 overflow-hidden bg-slate-700">
+                <img
+                  src="https://images.unsplash.com/photo-1588568694645-e7a7c7ed65b9?w=600&h=400&crop=entropy"
+                  alt="aerial yoga insurance suspension equipment protection inversion classes"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-purple-400 group-hover:text-purple-300 mb-2">Aerial Yoga Insurance</h3>
+                <p className="text-sm text-slate-400 mb-4">Protection for suspension equipment, inversion classes, and high-risk aerial yoga practices.</p>
+                <div className="text-xs text-purple-400">Read Guide →</div>
+              </div>
             </a>
 
-            <a href="/articles/public-liability-vs-professional-indemnity" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Insurance Types Explained</h3>
-              <p className="text-sm text-slate-400">Clear explanation of public liability vs professional indemnity and what each covers.</p>
-              <div className="text-xs text-blue-400 mt-4">Read Guide →</div>
+            <a href="/articles/public-liability-vs-professional-indemnity" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-indigo-500/50">
+              <div className="relative h-48 overflow-hidden bg-slate-700">
+                <img
+                  src="https://images.unsplash.com/photo-1552621554-5fefe8c9ef14?w=600&h=400&crop=entropy"
+                  alt="public liability professional indemnity insurance comparison yoga teachers"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-indigo-400 group-hover:text-indigo-300 mb-2">Insurance Types Explained</h3>
+                <p className="text-sm text-slate-400 mb-4">Clear explanation of public liability vs professional indemnity and what each covers.</p>
+                <div className="text-xs text-indigo-400">Read Guide →</div>
+              </div>
             </a>
 
-            <a href="/articles/yoga-alliance-insurance-requirements" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">Yoga Alliance Requirements</h3>
-              <p className="text-sm text-slate-400">Insurance requirements for Yoga Alliance members and professional standards.</p>
-              <div className="text-xs text-blue-400 mt-4">Read Guide →</div>
+            <a href="/articles/yoga-alliance-insurance-requirements" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-teal-500/50">
+              <div className="relative h-48 overflow-hidden bg-slate-700">
+                <img
+                  src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&crop=entropy"
+                  alt="yoga alliance insurance requirements accreditation standards membership"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-teal-400 group-hover:text-teal-300 mb-2">Yoga Alliance Requirements</h3>
+                <p className="text-sm text-slate-400 mb-4">Insurance requirements for Yoga Alliance members and professional standards.</p>
+                <div className="text-xs text-teal-400">Read Guide →</div>
+              </div>
             </a>
 
-            <a href="/articles" className="group bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 hover:border-blue-500/50 transition-colors">
-              <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300 mb-2">View All Articles</h3>
-              <p className="text-sm text-slate-400">Explore our complete collection of yoga teacher insurance guides and educational resources.</p>
-              <div className="text-xs text-blue-400 mt-4">View Articles →</div>
+            <a href="/articles" className="group bg-slate-800 hover:bg-slate-700 rounded-xl overflow-hidden transition-all border border-slate-700 hover:border-emerald-500/50">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-900 to-slate-900 flex items-center justify-center">
+                <div className="text-center">
+                  <svg className="w-12 h-12 text-blue-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17c0 5.523 3.692 10 8 10c1.906 0 3.674-.586 5-1.566 1.326.98 3.094 1.566 5 1.566 4.308 0 8-4.477 8-10 0-6.002-4.5-10.747-10-10.253z" />
+                  </svg>
+                  <p className="text-slate-300 font-semibold">View All Articles</p>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-emerald-400 group-hover:text-emerald-300 mb-2">Complete Collection</h3>
+                <p className="text-sm text-slate-400 mb-4">Explore our complete collection of yoga teacher insurance guides and educational resources.</p>
+                <div className="text-xs text-emerald-400">Browse All →</div>
+              </div>
             </a>
           </div>
         </div>

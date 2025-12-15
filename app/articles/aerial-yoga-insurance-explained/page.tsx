@@ -50,7 +50,7 @@ export default function ArticlePage() {
           <div className="mb-8">
             <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-purple-500/20">
               <img
-                src="https://images.unsplash.com/photo-1588286840104-8957b019727f?w=1200&h=600&fit=crop"
+                src="https://images.unsplash.com/photo-1588286840104-8957b019727f?w=1200&h=600&crop=entropy"
                 alt="aerial yoga insurance suspension equipment protection inversion classes coverage"
                 className="w-full h-full object-cover"
               />

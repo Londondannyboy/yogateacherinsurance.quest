@@ -48,7 +48,7 @@ export default function ArticlePage() {
           <div className="mb-8">
             <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-teal-500/20">
               <img
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=600&fit=crop"
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=600&crop=entropy"
                 alt="yoga alliance insurance requirements accreditation standards membership 2025"
                 className="w-full h-full object-cover"
               />

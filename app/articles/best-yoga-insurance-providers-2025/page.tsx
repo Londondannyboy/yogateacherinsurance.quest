@@ -49,7 +49,7 @@ export default function ArticlePage() {
           <div className="mb-8">
             <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-emerald-500/20">
               <img
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop"
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&crop=entropy"
                 alt="best yoga insurance providers 2025 comparison UK specialists"
                 className="w-full h-full object-cover"
               />

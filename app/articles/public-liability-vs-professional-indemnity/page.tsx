@@ -49,7 +49,7 @@ export default function ArticlePage() {
           <div className="mb-8">
             <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-indigo-500/20">
               <img
-                src="https://images.unsplash.com/photo-1552621554-5fefe8c9ef14?w=1200&h=600&fit=crop"
+                src="https://images.unsplash.com/photo-1552621554-5fefe8c9ef14?w=1200&h=600&crop=entropy"
                 alt="public liability professional indemnity insurance comparison yoga teachers coverage"
                 className="w-full h-full object-cover"
               />
