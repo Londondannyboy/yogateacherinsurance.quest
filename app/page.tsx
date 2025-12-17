@@ -246,7 +246,7 @@ export default function HomePage() {
             We help you find the best coverage at the best price.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-slate-800/30 rounded-2xl p-8 border border-slate-700/50 text-center">
               <h3 className="text-xl font-bold text-blue-400 mb-2">Yoga Alliance</h3>
               <p className="text-slate-400 text-sm mb-4">
@@ -270,6 +270,16 @@ export default function HomePage() {
               </p>
               <p className="text-sm text-slate-500">Flexible Options Available</p>
             </div>
+          </div>
+
+          <div className="text-center">
+            <a
+              href="/best-yoga-teacher-insurance-providers"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              View Detailed Provider Comparison →
+            </a>
+            <p className="text-slate-400 text-sm mt-4">Compare the top 5 yoga insurance specialists | Coverage details | Expert analysis</p>
           </div>
         </div>
       </section>
