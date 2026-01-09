@@ -4,6 +4,7 @@ import "./globals.css"
 import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import { CookieConsent } from "@/components/CookieConsent"
+import { Providers } from "@/components/providers"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -122,7 +123,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -138,12 +139,14 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
-        <Navigation />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <CookieConsent />
+        <Providers>
+          <Navigation />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <CookieConsent />
+        </Providers>
       </body>
     </html>
   )

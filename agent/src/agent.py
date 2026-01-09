@@ -1,0 +1,518 @@
+"""
+Yoga Teacher Insurance Agent
+CopilotKit + Pydantic AI integration for insurance advice
+"""
+from textwrap import dedent
+from typing import Optional
+from pydantic import BaseModel, Field
+from pydantic_ai import Agent, RunContext
+from pydantic_ai.ag_ui import StateDeps
+from pydantic_ai.models.google import GoogleModel
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import os
+import sys
+
+from dotenv import load_dotenv
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# =====
+# User Context Cache (for CopilotKit instructions parsing)
+# =====
+_cached_user_context: dict = {}
+
+def extract_user_from_instructions(instructions: str) -> dict:
+    """Extract user info from CopilotKit instructions text."""
+    result = {"user_id": None, "name": None, "email": None}
+
+    if not instructions:
+        return result
+
+    import re
+    id_match = re.search(r'User ID:\s*([a-f0-9-]+)', instructions, re.IGNORECASE)
+    if id_match:
+        result["user_id"] = id_match.group(1)
+
+    name_match = re.search(r'User Name:\s*([^\n]+)', instructions, re.IGNORECASE)
+    if name_match:
+        result["name"] = name_match.group(1).strip()
+
+    email_match = re.search(r'User Email:\s*([^\n]+)', instructions, re.IGNORECASE)
+    if email_match:
+        result["email"] = email_match.group(1).strip()
+
+    if result["user_id"]:
+        global _cached_user_context
+        _cached_user_context = result
+        print(f"[Agent] Cached user from instructions: {result['name']}", file=sys.stderr)
+
+    return result
+
+def get_effective_user_name(state_user) -> Optional[str]:
+    """Get user name from state or cached instructions."""
+    if state_user and (state_user.firstName or state_user.name):
+        return state_user.firstName or state_user.name
+    if _cached_user_context.get("name"):
+        return _cached_user_context["name"]
+    return None
+
+
+# =====
+# Insurance Data (Static for MVP, can move to DB later)
+# =====
+INSURANCE_PROVIDERS = [
+    {
+        "name": "Balens",
+        "specialty": "Yoga and holistic therapies specialist",
+        "public_liability": "£1m - £5m",
+        "professional_indemnity": "£1m - £5m",
+        "annual_cost_from": 60,
+        "annual_cost_to": 150,
+        "covers_aerial": True,
+        "covers_hot_yoga": True,
+        "covers_teacher_training": True,
+        "website": "https://www.balens.co.uk",
+        "highlights": ["Yoga specialist since 1960s", "Covers 350+ therapies", "Instant cover available"]
+    },
+    {
+        "name": "BGI",
+        "specialty": "Fitness and sports insurance",
+        "public_liability": "£1m - £10m",
+        "professional_indemnity": "£1m - £5m",
+        "annual_cost_from": 55,
+        "annual_cost_to": 180,
+        "covers_aerial": True,
+        "covers_hot_yoga": True,
+        "covers_teacher_training": True,
+        "website": "https://www.bgiuk.com",
+        "highlights": ["Part of Hiscox group", "Online quote system", "Covers equipment"]
+    },
+    {
+        "name": "Insure4Sport",
+        "specialty": "Sports and fitness professionals",
+        "public_liability": "£1m - £10m",
+        "professional_indemnity": "£1m - £5m",
+        "annual_cost_from": 50,
+        "annual_cost_to": 160,
+        "covers_aerial": True,
+        "covers_hot_yoga": True,
+        "covers_teacher_training": False,
+        "website": "https://www.insure4sport.co.uk",
+        "highlights": ["Quick online quotes", "Monthly payment option", "24/7 claims"]
+    },
+    {
+        "name": "Sports Coach UK",
+        "specialty": "Coaches and instructors",
+        "public_liability": "£5m - £10m",
+        "professional_indemnity": "£1m - £5m",
+        "annual_cost_from": 65,
+        "annual_cost_to": 140,
+        "covers_aerial": False,
+        "covers_hot_yoga": True,
+        "covers_teacher_training": True,
+        "website": "https://www.sportscoachuk.org",
+        "highlights": ["Includes first aid cover", "Equipment cover available", "Multi-activity policies"]
+    }
+]
+
+COVERAGE_TYPES = {
+    "public_liability": {
+        "name": "Public Liability Insurance",
+        "description": "Covers you if a student or member of the public is injured during your class, or if you damage someone's property.",
+        "required": True,
+        "typical_amount": "£1m - £5m",
+        "why_needed": "Most venues require this before you can teach. Covers legal costs if someone sues you for injury.",
+        "examples": [
+            "A student slips on a yoga mat and breaks their wrist",
+            "You accidentally damage a mirror at the studio",
+            "A student trips over your bag and injures themselves"
+        ]
+    },
+    "professional_indemnity": {
+        "name": "Professional Indemnity Insurance",
+        "description": "Covers you if a student claims your instruction caused them harm or you gave negligent advice.",
+        "required": True,
+        "typical_amount": "£1m - £5m",
+        "why_needed": "Protects you from claims that your teaching methods or advice caused injury.",
+        "examples": [
+            "A student claims your adjustment caused a back injury",
+            "Someone alleges your breathing instruction caused them to faint",
+            "A student says your advice worsened their condition"
+        ]
+    },
+    "personal_accident": {
+        "name": "Personal Accident Insurance",
+        "description": "Covers YOUR injuries if you're hurt while teaching.",
+        "required": False,
+        "typical_amount": "Up to £50,000",
+        "why_needed": "Provides income protection if you can't work due to injury.",
+        "examples": [
+            "You injure yourself demonstrating a pose",
+            "You slip and hurt your back during class",
+            "You're injured traveling to a class"
+        ]
+    },
+    "equipment": {
+        "name": "Equipment Insurance",
+        "description": "Covers your yoga props, mats, speakers, and other teaching equipment.",
+        "required": False,
+        "typical_amount": "Up to £5,000",
+        "why_needed": "Protects your investment in professional equipment.",
+        "examples": [
+            "Your yoga props are stolen from your car",
+            "Your speaker system is damaged in transit",
+            "Your bolsters are damaged by water leak at studio"
+        ]
+    }
+}
+
+YOGA_STYLES = {
+    "aerial": {
+        "name": "Aerial Yoga",
+        "risk_level": "Higher",
+        "insurance_notes": "Requires specialist cover. Not all insurers cover aerial. Check hammock/silk rigging is included.",
+        "typical_premium_increase": "10-30%"
+    },
+    "hot_yoga": {
+        "name": "Hot Yoga / Bikram",
+        "risk_level": "Higher",
+        "insurance_notes": "Higher risk due to heat. Ensure dehydration/heat-related incidents are covered.",
+        "typical_premium_increase": "10-20%"
+    },
+    "vinyasa": {
+        "name": "Vinyasa Flow",
+        "risk_level": "Standard",
+        "insurance_notes": "Standard coverage usually sufficient. Check adjustment/hands-on work is covered.",
+        "typical_premium_increase": "0%"
+    },
+    "hatha": {
+        "name": "Hatha Yoga",
+        "risk_level": "Lower",
+        "insurance_notes": "Generally lower risk. Most basic policies will cover this.",
+        "typical_premium_increase": "0%"
+    },
+    "yin": {
+        "name": "Yin Yoga",
+        "risk_level": "Lower",
+        "insurance_notes": "Passive style with lower injury risk. Standard cover usually fine.",
+        "typical_premium_increase": "0%"
+    },
+    "prenatal": {
+        "name": "Prenatal/Postnatal Yoga",
+        "risk_level": "Higher",
+        "insurance_notes": "Specialist cover required. Check pregnancy complications are included.",
+        "typical_premium_increase": "15-25%"
+    },
+    "teacher_training": {
+        "name": "Teacher Training",
+        "risk_level": "Standard",
+        "insurance_notes": "Not all policies cover running teacher training courses. Verify before signing up.",
+        "typical_premium_increase": "10-20%"
+    }
+}
+
+
+# =====
+# State Models
+# =====
+class UserProfile(BaseModel):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    firstName: Optional[str] = None
+    email: Optional[str] = None
+
+
+class AppState(BaseModel):
+    user: Optional[UserProfile] = None
+    # User's preferences for personalized recommendations
+    yoga_styles: list[str] = Field(default_factory=list)
+    teaching_locations: list[str] = Field(default_factory=list)  # studio, home, outdoor, online
+    student_count: Optional[str] = None  # "1-10", "11-50", "50+"
+    has_existing_insurance: bool = False
+
+
+# =====
+# Agent Definition
+# =====
+agent = Agent(
+    model=GoogleModel('gemini-2.0-flash'),
+    deps_type=StateDeps[AppState],
+    system_prompt=dedent("""
+        You are a friendly, knowledgeable insurance advisor for yoga teachers in the UK.
+
+        ## Your Personality
+        - Warm and supportive - yoga teachers are often anxious about insurance
+        - Clear and jargon-free - explain insurance terms simply
+        - Helpful and thorough - cover all the details they need
+        - Professional but approachable
+
+        ## Your Expertise
+        - UK yoga teacher insurance requirements
+        - Different coverage types (public liability, professional indemnity, etc.)
+        - Specialist coverage for aerial yoga, hot yoga, prenatal yoga
+        - How to compare insurance providers
+        - What questions to ask insurers
+
+        ## Important Notes
+        - Always emphasize that most venues REQUIRE insurance before you can teach
+        - Public liability is essential - typically £1m-£5m
+        - Professional indemnity protects against teaching-related claims
+        - Aerial/hot yoga needs SPECIALIST cover - not all policies include it
+        - Teacher training courses need separate verification of cover
+
+        ## Available Tools
+        Use your tools to provide specific, helpful information:
+        - compare_providers: Show a comparison of UK yoga insurance providers
+        - explain_coverage: Explain what different coverage types mean
+        - get_style_requirements: Get insurance requirements for specific yoga styles
+        - get_provider_info: Get details about a specific insurance provider
+
+        ## Conversation Style
+        - Ask clarifying questions to give personalized advice
+        - Use bullet points for lists
+        - Include specific numbers (prices, coverage amounts)
+        - Always suggest next steps
+
+        When someone asks about insurance, find out:
+        1. What yoga styles they teach (especially aerial, hot, prenatal)
+        2. Where they teach (studio, gym, private, outdoor, online)
+        3. Whether they run teacher training courses
+        4. How many students they typically teach
+
+        This helps you recommend the right coverage level and provider.
+    """)
+)
+
+
+# =====
+# Tools
+# =====
+@agent.tool
+def compare_providers(
+    ctx: RunContext[StateDeps[AppState]],
+    yoga_style: Optional[str] = None
+) -> dict:
+    """
+    Compare UK yoga teacher insurance providers.
+    Shows pricing, coverage levels, and key features.
+
+    Args:
+        yoga_style: Optional filter for providers that cover specific styles (e.g., "aerial", "hot_yoga")
+    """
+    providers = INSURANCE_PROVIDERS
+
+    # Filter by yoga style if specified
+    if yoga_style:
+        style_lower = yoga_style.lower().replace(" ", "_")
+        if style_lower == "aerial":
+            providers = [p for p in providers if p["covers_aerial"]]
+        elif style_lower in ["hot", "hot_yoga", "bikram"]:
+            providers = [p for p in providers if p["covers_hot_yoga"]]
+        elif style_lower in ["teacher_training", "teacher training", "ytt"]:
+            providers = [p for p in providers if p["covers_teacher_training"]]
+
+    return {
+        "title": f"UK Yoga Insurance Providers" + (f" (covering {yoga_style})" if yoga_style else ""),
+        "providers": providers,
+        "note": "Prices are approximate and vary based on coverage level and yoga styles taught."
+    }
+
+
+@agent.tool
+def explain_coverage(
+    ctx: RunContext[StateDeps[AppState]],
+    coverage_type: str
+) -> dict:
+    """
+    Explain what a specific type of insurance coverage means for yoga teachers.
+
+    Args:
+        coverage_type: The type of coverage to explain (e.g., "public_liability", "professional_indemnity", "equipment")
+    """
+    # Normalize the input
+    coverage_key = coverage_type.lower().replace(" ", "_")
+
+    # Handle common variations
+    if "liability" in coverage_key and "public" in coverage_key:
+        coverage_key = "public_liability"
+    elif "indemnity" in coverage_key or "professional" in coverage_key:
+        coverage_key = "professional_indemnity"
+    elif "accident" in coverage_key or "personal" in coverage_key:
+        coverage_key = "personal_accident"
+    elif "equipment" in coverage_key or "prop" in coverage_key:
+        coverage_key = "equipment"
+
+    if coverage_key in COVERAGE_TYPES:
+        coverage = COVERAGE_TYPES[coverage_key]
+        return {
+            "coverage_type": coverage["name"],
+            "description": coverage["description"],
+            "required": coverage["required"],
+            "typical_amount": coverage["typical_amount"],
+            "why_needed": coverage["why_needed"],
+            "examples": coverage["examples"]
+        }
+    else:
+        return {
+            "error": f"Unknown coverage type: {coverage_type}",
+            "available_types": list(COVERAGE_TYPES.keys()),
+            "suggestion": "Try: public_liability, professional_indemnity, personal_accident, or equipment"
+        }
+
+
+@agent.tool
+def get_style_requirements(
+    ctx: RunContext[StateDeps[AppState]],
+    yoga_style: str
+) -> dict:
+    """
+    Get insurance requirements and considerations for a specific yoga style.
+
+    Args:
+        yoga_style: The yoga style to check (e.g., "aerial", "hot_yoga", "vinyasa", "prenatal")
+    """
+    # Normalize the input
+    style_key = yoga_style.lower().replace(" ", "_").replace("-", "_")
+
+    # Handle common variations
+    if "aerial" in style_key:
+        style_key = "aerial"
+    elif "hot" in style_key or "bikram" in style_key:
+        style_key = "hot_yoga"
+    elif "vinyasa" in style_key or "flow" in style_key:
+        style_key = "vinyasa"
+    elif "hatha" in style_key:
+        style_key = "hatha"
+    elif "yin" in style_key or "restorative" in style_key:
+        style_key = "yin"
+    elif "prenatal" in style_key or "postnatal" in style_key or "pregnancy" in style_key:
+        style_key = "prenatal"
+    elif "teacher" in style_key or "training" in style_key or "ytt" in style_key:
+        style_key = "teacher_training"
+
+    if style_key in YOGA_STYLES:
+        style = YOGA_STYLES[style_key]
+        # Also get providers that cover this style
+        if style_key == "aerial":
+            suitable_providers = [p["name"] for p in INSURANCE_PROVIDERS if p["covers_aerial"]]
+        elif style_key == "hot_yoga":
+            suitable_providers = [p["name"] for p in INSURANCE_PROVIDERS if p["covers_hot_yoga"]]
+        elif style_key == "teacher_training":
+            suitable_providers = [p["name"] for p in INSURANCE_PROVIDERS if p["covers_teacher_training"]]
+        else:
+            suitable_providers = [p["name"] for p in INSURANCE_PROVIDERS]
+
+        return {
+            "style": style["name"],
+            "risk_level": style["risk_level"],
+            "insurance_notes": style["insurance_notes"],
+            "premium_impact": style["typical_premium_increase"],
+            "suitable_providers": suitable_providers
+        }
+    else:
+        return {
+            "error": f"Unknown yoga style: {yoga_style}",
+            "available_styles": list(YOGA_STYLES.keys()),
+            "suggestion": "Try: aerial, hot_yoga, vinyasa, hatha, yin, prenatal, or teacher_training"
+        }
+
+
+@agent.tool
+def get_provider_info(
+    ctx: RunContext[StateDeps[AppState]],
+    provider_name: str
+) -> dict:
+    """
+    Get detailed information about a specific insurance provider.
+
+    Args:
+        provider_name: The name of the provider (e.g., "Balens", "BGI", "Insure4Sport")
+    """
+    provider_lower = provider_name.lower()
+
+    for provider in INSURANCE_PROVIDERS:
+        if provider_lower in provider["name"].lower():
+            return {
+                "provider": provider["name"],
+                "specialty": provider["specialty"],
+                "public_liability": provider["public_liability"],
+                "professional_indemnity": provider["professional_indemnity"],
+                "annual_cost": f"£{provider['annual_cost_from']} - £{provider['annual_cost_to']}",
+                "covers_aerial": provider["covers_aerial"],
+                "covers_hot_yoga": provider["covers_hot_yoga"],
+                "covers_teacher_training": provider["covers_teacher_training"],
+                "website": provider["website"],
+                "highlights": provider["highlights"]
+            }
+
+    return {
+        "error": f"Provider not found: {provider_name}",
+        "available_providers": [p["name"] for p in INSURANCE_PROVIDERS],
+        "suggestion": "Try: Balens, BGI, Insure4Sport, or Sports Coach UK"
+    }
+
+
+@agent.tool
+def get_quick_quote_checklist(
+    ctx: RunContext[StateDeps[AppState]]
+) -> dict:
+    """
+    Get a checklist of information needed to get an insurance quote.
+    Useful when preparing to contact insurers.
+    """
+    return {
+        "title": "Information Needed for Insurance Quote",
+        "checklist": [
+            {"item": "Your qualifications", "detail": "Yoga teacher training certificate, accreditation body"},
+            {"item": "Teaching experience", "detail": "How many years you've been teaching"},
+            {"item": "Yoga styles taught", "detail": "Especially aerial, hot, prenatal - these affect pricing"},
+            {"item": "Teaching locations", "detail": "Studio, gym, private homes, outdoors, online"},
+            {"item": "Class sizes", "detail": "Average and maximum number of students"},
+            {"item": "Annual turnover", "detail": "Approximate income from teaching (if known)"},
+            {"item": "Claims history", "detail": "Any previous insurance claims"},
+            {"item": "Additional activities", "detail": "Workshops, retreats, teacher training courses"}
+        ],
+        "tips": [
+            "Get quotes from at least 2-3 providers to compare",
+            "Ask specifically about aerial/hot yoga if you teach these",
+            "Check if online teaching is included (important post-COVID)",
+            "Ask about monthly payment options if budget is tight"
+        ]
+    }
+
+
+# =====
+# FastAPI App Setup
+# =====
+# Export agent as AG-UI app
+ag_ui_app = agent.to_ag_ui(deps=StateDeps(AppState()))
+
+# Main FastAPI app
+main_app = FastAPI(title="Yoga Insurance Agent", description="AI assistant for yoga teacher insurance")
+
+# CORS middleware
+main_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@main_app.get("/")
+def root():
+    """Health check endpoint."""
+    return {"status": "ok", "agent": "yoga-insurance-agent"}
+
+@main_app.get("/health")
+def health():
+    """Health check for Railway."""
+    return {"status": "healthy"}
+
+# Mount AG-UI app for CopilotKit
+main_app.mount("/agui", ag_ui_app)
+
+# Export for uvicorn
+app = main_app

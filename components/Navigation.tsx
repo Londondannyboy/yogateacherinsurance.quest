@@ -2,9 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { authClient } from '@/lib/auth/client'
+import { UserButton } from '@neondatabase/auth/react/ui'
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { data: session, isPending } = authClient.useSession()
+  const user = session?.user
 
   const navLinks = [
     { href: '#calculator', label: 'Get Quote' },
@@ -59,6 +63,25 @@ export function Navigation() {
             >
               Contact
             </Link>
+
+            {/* Auth buttons */}
+            {isPending ? (
+              <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
+            ) : user ? (
+              <div className="flex items-center gap-3">
+                <span className="text-slate-300 text-sm">
+                  {user.name?.split(' ')[0] || 'User'}
+                </span>
+                <UserButton />
+              </div>
+            ) : (
+              <Link
+                href="/auth/sign-in"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -112,6 +135,23 @@ export function Navigation() {
               >
                 Contact
               </Link>
+
+              {/* Mobile auth */}
+              {!isPending && !user && (
+                <Link
+                  href="/auth/sign-in"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mx-4 mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
+              {user && (
+                <div className="px-4 py-3 flex items-center gap-3">
+                  <UserButton />
+                  <span className="text-slate-300">{user.name || 'User'}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
