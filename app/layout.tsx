@@ -5,6 +5,8 @@ import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import { CookieConsent } from "@/components/CookieConsent"
 import { Providers } from "@/components/providers"
+import { FloatingVoice } from "@/components/FloatingVoice"
+import { Disclaimer } from "@/components/Disclaimer"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -140,12 +142,14 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased bg-slate-900 text-white`}>
         <Providers>
+          <Disclaimer />
           <Navigation />
           <main className="min-h-screen">
             {children}
           </main>
           <Footer />
           <CookieConsent />
+          <FloatingVoice />
         </Providers>
       </body>
     </html>
