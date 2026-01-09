@@ -4,267 +4,132 @@
 Add AI-powered insurance advisor to yogateacherinsurance.quest using:
 - CopilotKit + Pydantic AI (chat agent)
 - Neon Auth (user management)
-- Hume EVI (voice agent on Railway)
+- Hume EVI (voice agent)
+- Zep (memory persistence)
 
 ---
 
-## Phase 1: CopilotKit + Pydantic AI
+## Implementation Progress (Updated January 2025)
 
-**Goal:** Get chat working with an AI agent that can answer insurance questions
+### Phase 1: CopilotKit + Pydantic AI - COMPLETE
 
-### Step 1.1: Install Frontend Dependencies
-```bash
-npm install @copilotkit/react-core @copilotkit/react-ui @ag-ui/client
-```
-- [ ] Run npm install
-- [ ] Verify no peer dependency issues
+| Task | Status | Notes |
+|------|--------|-------|
+| Install frontend deps | Done | @copilotkit/react-core, @copilotkit/react-ui, @ag-ui/client |
+| Create agent folder | Done | /agent/src/agent.py |
+| Build basic agent | Done | 6 tools, Gemini 2.0 Flash model |
+| Add CopilotKit to frontend | Done | providers.tsx with CopilotSidebar |
+| Create API route | Done | /api/copilotkit/route.ts |
+| Deploy to Railway | Done | yoga-insurance-agent-production.up.railway.app |
 
-### Step 1.2: Create Agent Folder Structure
-```bash
-mkdir -p agent/src
-```
-- [ ] Create `agent/` directory
-- [ ] Create `agent/src/` directory
-- [ ] Create `agent/pyproject.toml`
-- [ ] Create `agent/src/agent.py`
-- [ ] Create `agent/Procfile`
+**Agent Tools Implemented:**
+- `compare_providers(yoga_style)` - Compare UK providers
+- `explain_coverage(coverage_type)` - Explain coverage types
+- `get_style_requirements(yoga_style)` - Style-specific requirements
+- `get_provider_info(provider_name)` - Provider details
+- `get_quick_quote_checklist()` - Quote preparation
+- `get_my_profile()` - User profile retrieval
 
-### Step 1.3: Build Basic Agent
-- [ ] Define AppState model (quotes, user)
-- [ ] Create Agent with Google Gemini model
-- [ ] Write system prompt for insurance advisor
-- [ ] Add `get_insurance_info` tool (static info first)
-- [ ] Export as AG-UI app
-- [ ] Test locally: `cd agent && uv run uvicorn src.agent:app --port 8000`
+### Phase 2: Neon Auth - COMPLETE
 
-### Step 1.4: Add CopilotKit to Frontend
-- [ ] Create `app/providers.tsx` with CopilotKit wrapper
-- [ ] Update `app/layout.tsx` to use Providers
-- [ ] Create `app/api/copilotkit/route.ts`
-- [ ] Add CopilotSidebar to layout
-- [ ] Test chat works locally
+| Task | Status | Notes |
+|------|--------|-------|
+| Enable Neon Auth | Done | NEON_AUTH_BASE_URL configured |
+| Install @neondatabase/auth | Done | Required --legacy-peer-deps |
+| Create auth files | Done | lib/auth/client.ts, lib/auth/server.ts |
+| Auth API handler | Done | /api/auth/[...path]/route.ts |
+| Auth pages | Done | /auth/sign-in, sign-up, etc. |
+| UserButton in nav | Done | With size="icon" prop |
+| Profile page | Done | /profile with yoga styles, locations |
 
-### Step 1.5: Add Agent Tools
-- [ ] `explain_coverage(coverage_type)` - Explain insurance types
-- [ ] `compare_providers()` - Compare UK yoga insurance providers
-- [ ] `get_requirements(yoga_style)` - Legal requirements by yoga type
-- [ ] `search_articles(topic)` - Search site content
+**Issues Fixed:**
+- Peer dependency conflict with Next.js 16 requirement
+- TypeScript errors with authClient prop (cast as any)
+- UserButton size prop warning
 
-### Step 1.6: Add Generative UI
-- [ ] Create `components/QuoteCard.tsx`
-- [ ] Create `components/ProviderComparison.tsx`
-- [ ] Add `useRenderToolCall` hooks for each tool
-- [ ] Test tool results render correctly
+### Phase 3: Hume Voice - COMPLETE (with issues)
 
-### Step 1.7: Deploy Agent to Railway
-- [ ] Create Railway project
-- [ ] Link to GitHub `/agent` subdirectory
-- [ ] Set environment variables:
-  - `DATABASE_URL`
-  - `GOOGLE_API_KEY`
-- [ ] Deploy
-- [ ] Get public URL
-- [ ] Update frontend `.env` with `AGENT_URL`
-- [ ] Test production chat works
+| Task | Status | Notes |
+|------|--------|-------|
+| Install @humeai/voice-react | Done | |
+| Token endpoint | Done | Fixed URL to oauth2-cc/token |
+| Voice widget | Done | HeroVoice.tsx with pulsating orb |
+| User context in prompt | Done | Passes name, email to system prompt |
+| Add to hero section | Done | Centered below hero text |
 
-**Phase 1 Complete Checkpoint:**
-- [ ] Chat works in production
-- [ ] Agent answers insurance questions
-- [ ] Tools execute and return data
-- [ ] Generative UI renders results
+**Issues:**
+- Voice orb click not responding (needs debugging)
+- CLM endpoint not yet implemented (Hume uses its own LLM)
+
+### Phase 4: Zep Memory - PARTIAL
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Install @getzep/zep-cloud | Done | |
+| Create API route | Done | /api/zep/route.ts |
+| Profile saves to Zep | Done | On save, adds facts to graph |
+| Configure ZEP_API_KEY | Pending | Need to add to Vercel |
 
 ---
 
-## Phase 2: Neon Auth
+## Known Issues & Debugging
 
-**Goal:** Add user authentication so agent can personalize responses
+### 1. CopilotKit Sidebar Not Clicking
+**Symptoms:** Clicking the chat icon does nothing
+**Possible Causes:**
+- JavaScript error preventing event handlers
+- z-index conflict (CSS override added)
+- useCoAgent hook was causing errors (removed)
 
-### Step 2.1: Enable Neon Auth in Console
-- [ ] Go to Neon Console
-- [ ] Enable Auth for project
-- [ ] Get `NEON_AUTH_BASE_URL`
-- [ ] Add to `.env.local`
+**Debug Steps:**
+1. Open browser console, look for errors
+2. Check Network tab for failed requests to /api/copilotkit
+3. Verify AGENT_URL env var is set correctly
 
-### Step 2.2: Install Auth Package
-```bash
-npm install @neondatabase/auth
-```
-- [ ] Run npm install
+### 2. Voice Orb Not Clicking
+**Symptoms:** Clicking voice orb does nothing
+**Possible Causes:**
+- NEXT_PUBLIC_HUME_CONFIG_ID not set
+- Token endpoint returning error
+- VoiceProvider not initialized properly
 
-### Step 2.3: Create Auth Files
-- [ ] Create `app/lib/auth/client.ts`
-- [ ] Create `app/lib/auth/server.ts`
-- [ ] Create `app/api/auth/[...path]/route.ts`
-- [ ] Create `app/auth/[path]/page.tsx`
+**Debug Steps:**
+1. Check browser console for errors
+2. Check Network tab for /api/hume-token requests
+3. Verify Hume env vars are set
 
-### Step 2.4: Add Auth UI Components
-- [ ] Add SignIn/SignOut links to header
-- [ ] Add UserButton component
-- [ ] Style auth pages to match site design
+### 3. Agent Doesn't Know User Name
+**Symptoms:** Agent says "Hi" but doesn't use user's name when asked
+**Possible Causes:**
+- instructions prop not reaching agent
+- @agent.instructions decorator not working
+- State not being synced via useCoAgent (was removed)
 
-### Step 2.5: Create User Profile Table
-```sql
-CREATE TABLE user_profile_items (
-  id SERIAL PRIMARY KEY,
-  user_id TEXT NOT NULL,
-  item_type TEXT NOT NULL,
-  value TEXT NOT NULL,
-  metadata JSONB DEFAULT '{}',
-  confirmed BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id, item_type, value)
-);
-```
-- [ ] Run SQL in Neon Console
-- [ ] Create API route `app/api/user-profile/route.ts`
-
-### Step 2.6: Pass User Context to Agent
-- [ ] Fetch user profile items on page load
-- [ ] Build `agentInstructions` string with user context
-- [ ] Pass to CopilotSidebar `instructions` prop
-- [ ] Add middleware to agent.py to extract user from instructions
-
-### Step 2.7: Add Profile-Aware Tools
-- [ ] `save_user_preference(type, value)` - Save to Neon
-- [ ] `get_user_profile()` - Get user's saved info
-- [ ] Update other tools to use user context
-
-**Phase 2 Complete Checkpoint:**
-- [ ] Users can sign in/sign up
-- [ ] Agent knows user's name
-- [ ] Agent can save/retrieve user preferences
-- [ ] Personalized responses based on saved info
+**Debug Steps:**
+1. Check agent logs on Railway for received instructions
+2. Test with curl directly to agent endpoint
+3. Re-add useCoAgent for proper state sync
 
 ---
 
-## Phase 3: Hume Conversational Agent
+## Environment Variables Checklist
 
-**Goal:** Add voice interface that uses the same agent brain
+### Vercel
+- [x] DATABASE_URL
+- [x] NEON_AUTH_BASE_URL
+- [x] HUME_API_KEY
+- [x] HUME_SECRET_KEY
+- [x] NEXT_PUBLIC_HUME_CONFIG_ID (8e6530df-c020-4b82-bfd3-62617a100b17)
+- [ ] ZEP_API_KEY (needs to be added)
+- [ ] AGENT_URL (verify set to Railway URL)
 
-### Step 3.1: Create Hume Account
-- [ ] Sign up at platform.hume.ai
-- [ ] Create new EVI config
-- [ ] Note Config ID
-- [ ] Get API keys
-
-### Step 3.2: Install Hume Package
-```bash
-npm install @humeai/voice-react
-```
-- [ ] Run npm install
-
-### Step 3.3: Add Hume Token Endpoint
-- [ ] Create `app/api/hume-token/route.ts`
-- [ ] Add `HUME_API_KEY` and `HUME_SECRET_KEY` to `.env`
-- [ ] Test token endpoint returns access token
-
-### Step 3.4: Create Voice Widget
-- [ ] Create `components/VoiceWidget.tsx`
-- [ ] Add VoiceProvider with configId
-- [ ] Add connect/disconnect button
-- [ ] Style to match site design
-
-### Step 3.5: Add CLM Endpoint to Agent
-- [ ] Add `/chat/completions` endpoint to agent.py
-- [ ] Implement SSE streaming response (required by Hume)
-- [ ] Route to same agent logic as AG-UI
-- [ ] Deploy updated agent to Railway
-
-### Step 3.6: Configure Hume Dashboard
-- [ ] Set CLM URL to Railway agent `/chat/completions`
-- [ ] Enable "CLM-only mode" (disable Hume's built-in LLM)
-- [ ] Configure voice settings (speed, tone)
-- [ ] Add `NEXT_PUBLIC_HUME_CONFIG_ID` to frontend `.env`
-
-### Step 3.7: Integrate Voice with Chat
-- [ ] When voice message received, also add to CopilotKit chat
-- [ ] Sync state between voice and chat
-- [ ] Add visual indicator when voice is active
-
-### Step 3.8: Add Session Management
-- [ ] Use stable session IDs based on user ID
-- [ ] Prevent re-greeting on reconnect
-- [ ] Track `greetedThisSession` state
-
-**Phase 3 Complete Checkpoint:**
-- [ ] Voice connects successfully
-- [ ] Agent responds via voice
-- [ ] Same brain for voice and chat
-- [ ] Voice knows user context (if logged in)
+### Railway
+- [x] DATABASE_URL
+- [x] GOOGLE_API_KEY
 
 ---
 
-## Phase 4: Polish & Optimization
-
-### Step 4.1: UI/UX Improvements
-- [ ] Add loading states for all async operations
-- [ ] Add error handling and user-friendly messages
-- [ ] Optimize sidebar for mobile
-- [ ] Add chat history persistence
-
-### Step 4.2: SEO Preservation
-- [ ] Ensure chat doesn't interfere with SEO content
-- [ ] Keep existing page rankings
-- [ ] Add structured data for FAQ content
-
-### Step 4.3: Analytics
-- [ ] Track chat interactions
-- [ ] Track voice usage
-- [ ] Track conversion (quote requests)
-
-### Step 4.4: Content Integration
-- [ ] Agent can reference existing site articles
-- [ ] Agent can link to relevant pages
-- [ ] Agent recommends content based on questions
-
----
-
-## Environment Variables Summary
-
-### Development (.env.local)
-```env
-# Database
-DATABASE_URL=postgresql://...
-
-# Agent (local)
-AGENT_URL=http://localhost:8000
-
-# Google AI
-GOOGLE_API_KEY=...
-
-# Neon Auth (Phase 2)
-NEON_AUTH_BASE_URL=https://...
-
-# Hume (Phase 3)
-HUME_API_KEY=...
-HUME_SECRET_KEY=...
-NEXT_PUBLIC_HUME_CONFIG_ID=...
-```
-
-### Production
-```env
-# Database
-DATABASE_URL=postgresql://...
-
-# Agent (Railway)
-AGENT_URL=https://yoga-agent-production.up.railway.app
-
-# Google AI
-GOOGLE_API_KEY=...
-
-# Neon Auth
-NEON_AUTH_BASE_URL=https://...
-
-# Hume
-HUME_API_KEY=...
-HUME_SECRET_KEY=...
-NEXT_PUBLIC_HUME_CONFIG_ID=...
-```
-
----
-
-## Deployment Architecture
+## Architecture Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -278,22 +143,29 @@ NEXT_PUBLIC_HUME_CONFIG_ID=...
 │   │ yogateacher  │ ─── AG-UI ──────► │  Pydantic    │      │
 │   │ insurance    │                    │  AI Agent    │      │
 │   │ .quest       │                    │              │      │
-│   │              │                    │ • Tools      │      │
-│   │ • Frontend   │                    │ • DB Access  │      │
-│   │ • CopilotKit │                    │ • CLM        │      │
+│   │              │                    │ • 6 Tools    │      │
+│   │ • Frontend   │                    │ • @agent.    │      │
+│   │ • CopilotKit │                    │   instructions│     │
 │   │ • Neon Auth  │                    │              │      │
+│   │ • HeroVoice  │                    │              │      │
 │   └──────────────┘                    └──────────────┘      │
-│          │                                   ▲              │
-│          │                                   │              │
-│          ▼                                   │              │
-│   ┌──────────────┐                           │              │
-│   │   HUME AI    │ ──── /chat/completions ───┘              │
-│   │   (Voice)    │                                          │
-│   └──────────────┘                                          │
-│                                                              │
-│   ┌──────────────┐                                          │
-│   │    NEON      │ ◄─────────────────────────────────────── │
-│   │  (Database)  │   Both Vercel & Railway connect          │
+│          │                                                   │
+│          │                                                   │
+│          ▼                                                   │
+│   ┌──────────────┐         ┌──────────────┐                 │
+│   │   HUME AI    │         │     ZEP      │                 │
+│   │   (Voice)    │         │   (Memory)   │                 │
+│   │              │         │              │                 │
+│   │ Config:      │         │ User facts   │                 │
+│   │ 8e6530df...  │         │ stored in    │                 │
+│   └──────────────┘         │ knowledge    │                 │
+│                            │ graph        │                 │
+│   ┌──────────────┐         └──────────────┘                 │
+│   │    NEON      │                                          │
+│   │  (Database)  │                                          │
+│   │              │                                          │
+│   │ • Auth tables│                                          │
+│   │ • User data  │                                          │
 │   └──────────────┘                                          │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -301,72 +173,45 @@ NEXT_PUBLIC_HUME_CONFIG_ID=...
 
 ---
 
-## Risks & Mitigations
+## Next Session Priorities
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Agent responses too slow | Poor UX | Use Gemini Flash, optimize prompts |
-| Voice quality issues | User frustration | Test extensively, have fallback to chat |
-| SEO ranking loss | Traffic drop | Don't modify existing page structure |
-| Auth integration complex | Delays | Follow proven patterns from esportsjobs |
+### Priority 1: Fix Click Issues
+Debug why CopilotKit sidebar and voice orb don't respond to clicks.
+- Check browser console for JS errors
+- Verify all env vars are set
+- Test with local dev server
 
----
+### Priority 2: Configure Zep
+Add ZEP_API_KEY to Vercel and test memory persistence.
 
-## Success Metrics
+### Priority 3: User Context
+Ensure agent properly receives and uses user's name:
+- Test instructions prop flow
+- Consider re-adding useCoAgent with proper error handling
+- Verify @agent.instructions decorator works
 
-### Phase 1
-- Chat response time < 3 seconds
-- Agent can answer 80% of common insurance questions
-- Zero errors in production logs
-
-### Phase 2
-- User signup flow works end-to-end
-- Agent uses user name in responses
-- Preferences persist across sessions
-
-### Phase 3
-- Voice connects within 2 seconds
-- Voice and chat give identical answers
-- No duplicate greetings on reconnect
-
-### Overall
-- User engagement increases (time on site)
-- Quote requests increase
-- Support email volume decreases
+### Priority 4: CLM Endpoint
+Add /chat/completions endpoint to agent so Hume uses same brain:
+- OpenAI-compatible SSE streaming
+- Route through same agent logic
+- Configure in Hume dashboard
 
 ---
 
-## Reference Implementation
-See `/Users/dankeegan/copilotkit-demo/` for working patterns of:
-- CopilotKit + Pydantic AI integration
-- Neon Auth setup
-- Hume voice integration
-- User context passing to agent
-- Generative UI with useRenderToolCall
+## Files Modified This Session
+
+1. `components/providers.tsx` - Added then removed useCoAgent
+2. `components/HeroVoice.tsx` - New voice orb component
+3. `components/Navigation.tsx` - Profile link, UserButton size prop
+4. `app/page.tsx` - Added HeroVoice to hero section
+5. `app/profile/page.tsx` - New profile settings page
+6. `app/api/zep/route.ts` - New Zep API route
+7. `app/globals.css` - z-index overrides for CopilotKit
+8. `agent/src/agent.py` - Added @agent.instructions, get_my_profile tool
 
 ---
 
-## Quick Start (First Session)
-
-1. Install dependencies:
-```bash
-npm install @copilotkit/react-core @copilotkit/react-ui @ag-ui/client
-```
-
-2. Create agent folder:
-```bash
-mkdir -p agent/src
-```
-
-3. Copy starter files from copilotkit-demo or use patterns in claude.md
-
-4. Run locally:
-```bash
-# Terminal 1
-npm run dev
-
-# Terminal 2
-cd agent && uv run uvicorn src.agent:app --reload --port 8000
-```
-
-5. Test chat at http://localhost:3000
+## Reference
+- See CLAUDE.md for detailed documentation
+- copilotkit-demo project for working patterns
+- Zep MCP server available for memory queries
