@@ -69,10 +69,13 @@ export function Navigation() {
               <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
             ) : user ? (
               <div className="flex items-center gap-3">
-                <span className="text-slate-300 text-sm">
-                  {user.name?.split(' ')[0] || 'User'}
-                </span>
-                <UserButton />
+                <Link
+                  href="/profile"
+                  className="text-slate-300 hover:text-white text-sm transition-colors"
+                >
+                  {user.name?.split(' ')[0] || 'Profile'}
+                </Link>
+                <UserButton size="icon" />
               </div>
             ) : (
               <Link
@@ -147,9 +150,18 @@ export function Navigation() {
                 </Link>
               )}
               {user && (
-                <div className="px-4 py-3 flex items-center gap-3">
-                  <UserButton />
-                  <span className="text-slate-300">{user.name || 'User'}</span>
+                <div className="px-4 py-3 space-y-2">
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors"
+                  >
+                    My Profile
+                  </Link>
+                  <div className="flex items-center gap-3 px-4">
+                    <UserButton size="icon" />
+                    <span className="text-slate-300">{user.name || 'User'}</span>
+                  </div>
                 </div>
               )}
             </div>

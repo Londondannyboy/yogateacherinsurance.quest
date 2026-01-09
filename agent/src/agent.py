@@ -287,6 +287,44 @@ agent = Agent(
 )
 
 
+# Dynamic instructions that inject user context from state
+@agent.instructions
+async def user_context_instructions(ctx: RunContext[StateDeps[AppState]]) -> str:
+    """Inject user context into the system prompt dynamically."""
+    state = ctx.deps.state
+    user = state.user if state else None
+
+    # Build user context section
+    if user and (user.name or user.firstName):
+        first_name = user.firstName or (user.name.split()[0] if user.name else None)
+        yoga_styles = ", ".join(state.yoga_styles) if state.yoga_styles else "Not specified"
+        locations = ", ".join(state.teaching_locations) if state.teaching_locations else "Not specified"
+
+        return dedent(f"""
+            ## CURRENT USER CONTEXT
+            You are speaking with a logged-in user. Here is their information:
+            - Name: {user.name or 'Unknown'}
+            - First Name: {first_name or 'Unknown'}
+            - Email: {user.email or 'Not provided'}
+            - Yoga Styles They Teach: {yoga_styles}
+            - Teaching Locations: {locations}
+            - Student Count: {state.student_count or 'Not specified'}
+            - Has Existing Insurance: {'Yes' if state.has_existing_insurance else 'No'}
+
+            IMPORTANT INSTRUCTIONS:
+            - ALWAYS address the user by their first name ({first_name}) in your responses
+            - When they ask "what's my name", "who am I", or about their profile, tell them: "{user.name}"
+            - Use their preferences to give personalized insurance recommendations
+            - If they teach aerial or hot yoga, proactively mention specialist coverage requirements
+        """)
+    else:
+        return dedent("""
+            ## GUEST USER
+            This user is not logged in. They can browse general insurance information.
+            Encourage them to sign in for personalized recommendations.
+        """)
+
+
 # =====
 # Tools
 # =====
