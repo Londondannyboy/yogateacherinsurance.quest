@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ZepClient } from '@getzep/zep-cloud';
 
+// Graph ID for shared insurance knowledge
+const INSURANCE_GRAPH_ID = 'insurance';
+
 // Initialize Zep client
 const getZepClient = () => {
   const apiKey = process.env.ZEP_API_KEY;
@@ -66,6 +69,54 @@ export async function POST(request: NextRequest) {
           data: fact,
         });
         return NextResponse.json({ success: true });
+
+      case 'init_insurance_graph':
+        // Initialize the shared insurance knowledge graph
+        try {
+          await client.graph.create({
+            graphId: INSURANCE_GRAPH_ID,
+            name: 'Yoga Teacher Insurance Knowledge Graph',
+          });
+          return NextResponse.json({ success: true, graphId: INSURANCE_GRAPH_ID, created: true });
+        } catch (e: any) {
+          // Graph might already exist
+          if (e.message?.includes('already exists')) {
+            return NextResponse.json({ success: true, graphId: INSURANCE_GRAPH_ID, created: false });
+          }
+          throw e;
+        }
+
+      case 'add_insurance_knowledge':
+        // Add knowledge to the shared insurance graph
+        const { knowledge } = body;
+        if (!knowledge) {
+          return NextResponse.json(
+            { error: 'knowledge is required for add_insurance_knowledge action' },
+            { status: 400 }
+          );
+        }
+        await client.graph.add({
+          graphId: INSURANCE_GRAPH_ID,
+          type: 'text',
+          data: knowledge,
+        });
+        return NextResponse.json({ success: true });
+
+      case 'search_insurance':
+        // Search the insurance knowledge graph
+        const { query } = body;
+        if (!query) {
+          return NextResponse.json(
+            { error: 'query is required for search_insurance action' },
+            { status: 400 }
+          );
+        }
+        const results = await client.graph.search({
+          graphId: INSURANCE_GRAPH_ID,
+          query: query,
+          limit: 10,
+        });
+        return NextResponse.json({ results });
 
       default:
         return NextResponse.json(

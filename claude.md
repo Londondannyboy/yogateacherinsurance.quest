@@ -18,14 +18,16 @@
 - [x] **Zep Integration** - API routes created for memory persistence
 - [x] **Disclaimer Banner** - "Comparison Site - Not an Insurer" notice
 
-### KNOWN ISSUES TO FIX
-1. **CopilotKit sidebar not clicking** - May be CSS z-index or JavaScript error
-2. **Voice orb not clicking** - Same potential issue
-3. **Agent doesn't know user name** - instructions prop may not be reaching agent properly
-4. **useCoAgent was removed** - Simplified to avoid errors, but means no bidirectional state sync
+### FIXED (January 2025)
+1. **Agent now knows user name** - Re-added `useCoAgent` hook in `providers.tsx` to sync user state
+2. **ZEP_API_KEY configured** - Added to `.env.local` for local dev
 
-### NEEDS CONFIGURATION
-- `ZEP_API_KEY` - Add to Vercel for memory persistence
+### REMAINING ISSUES
+1. **Voice orb needs Hume credentials** - Add `HUME_API_KEY` and `HUME_SECRET_KEY` to `.env.local`
+2. **CopilotKit sidebar** - Should work now; needs testing after deploy
+
+### NEEDS CONFIGURATION IN VERCEL
+- `ZEP_API_KEY` - Add to Vercel environment variables for production memory persistence
 
 ---
 
@@ -191,8 +193,8 @@ cd agent && railway up
 
 ## Next Steps (Priority Order)
 
-1. **Debug click issues** - Check browser console, fix JS errors
-2. **Configure Zep** - Add ZEP_API_KEY for memory persistence
-3. **Test user context** - Verify agent receives user name via instructions
-4. **Add useCoAgent back** - For bidirectional state sync (profile page)
-5. **CLM endpoint** - Add /chat/completions to agent for Hume to use same brain
+1. **Add Hume credentials** - Add `HUME_API_KEY` and `HUME_SECRET_KEY` to `.env.local` for voice
+2. **Add ZEP_API_KEY to Vercel** - Enable memory persistence in production
+3. **Deploy and test** - Push changes to GitHub and verify click handlers work
+4. **CLM endpoint** - Add /chat/completions to agent for Hume to use same brain
+5. **Profile sync** - Connect profile page to useCoAgent for full bidirectional state
