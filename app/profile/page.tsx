@@ -122,6 +122,35 @@ function getJourneyTitle(level: number): string {
   return 'Yoga Beginner';
 }
 
+// localStorage key for profile
+const PROFILE_STORAGE_KEY = 'yoga_teacher_profile';
+
+// Get profile from localStorage
+function loadProfileFromStorage(): ProfileState | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.error('Error loading profile from localStorage:', e);
+  }
+  return null;
+}
+
+// Save profile to localStorage
+function saveProfileToStorage(profile: ProfileState) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+    // Also dispatch a custom event so other components can react
+    window.dispatchEvent(new CustomEvent('profileUpdated', { detail: profile }));
+  } catch (e) {
+    console.error('Error saving profile to localStorage:', e);
+  }
+}
+
 export default function ProfilePage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
@@ -140,6 +169,25 @@ export default function ProfilePage() {
 
   const [saved, setSaved] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load profile from localStorage on mount
+  useEffect(() => {
+    const storedProfile = loadProfileFromStorage();
+    if (storedProfile) {
+      setProfile(storedProfile);
+      console.log('[Profile] Loaded from localStorage:', storedProfile);
+    }
+    setLoaded(true);
+  }, []);
+
+  // Auto-save profile to localStorage when it changes (after initial load)
+  useEffect(() => {
+    if (loaded) {
+      saveProfileToStorage(profile);
+      console.log('[Profile] Auto-saved to localStorage:', profile);
+    }
+  }, [profile, loaded]);
 
   // Calculate progress
   const { xp, level, completionPercent, requiredComplete } = useMemo(

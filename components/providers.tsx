@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { CopilotKit, useCoAgent } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
@@ -73,6 +73,30 @@ function getInitialMessage(pathname: string, firstName: string | null): string {
   return `${name} I'm your yoga teacher insurance advisor. I can help you understand what coverage you need, compare UK providers, and explain different insurance types.\n\nWhat would you like to know?`;
 }
 
+// Profile type (must match profile page)
+type UserProfile = {
+  yoga_styles: string[];
+  teaching_locations: string[];
+  student_count: string | null;
+  experience_years: string | null;
+  has_existing_insurance: boolean;
+  qualifications: string[];
+};
+
+// Load profile from localStorage
+function loadProfileFromStorage(): UserProfile | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem('yoga_teacher_profile');
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.error('Error loading profile from localStorage:', e);
+  }
+  return null;
+}
+
 // Component that syncs user state to agent - optimized to prevent re-render loops
 function UserStateSync() {
   const { data: session } = authClient.useSession();
@@ -84,7 +108,26 @@ function UserStateSync() {
   // Track previous values to prevent unnecessary updates
   const prevStateRef = useRef<string>('');
 
-  debugLog('UserStateSync render', { user: user?.name, currentPage });
+  // Load profile from localStorage
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  // Load profile on mount and listen for updates
+  useEffect(() => {
+    const profile = loadProfileFromStorage();
+    setUserProfile(profile);
+    debugLog('Loaded profile from localStorage', profile);
+
+    // Listen for profile updates from profile page
+    const handleProfileUpdate = (e: CustomEvent<UserProfile>) => {
+      setUserProfile(e.detail);
+      debugLog('Profile updated via event', e.detail);
+    };
+
+    window.addEventListener('profileUpdated', handleProfileUpdate as EventListener);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate as EventListener);
+  }, []);
+
+  debugLog('UserStateSync render', { user: user?.name, currentPage, userProfile });
 
   const { state, setState } = useCoAgent<AgentState>({
     name: 'yoga_agent',
@@ -102,7 +145,8 @@ function UserStateSync() {
 
   // Memoize the state update to prevent unnecessary re-renders
   const updateState = useCallback(() => {
-    const stateKey = `${user?.id || ''}-${user?.name || ''}-${currentPage}`;
+    const profileKey = userProfile ? JSON.stringify(userProfile) : '';
+    const stateKey = `${user?.id || ''}-${user?.name || ''}-${currentPage}-${profileKey}`;
 
     // Only update if state actually changed
     if (stateKey !== prevStateRef.current) {
@@ -114,18 +158,18 @@ function UserStateSync() {
           firstName: firstName,
           email: user.email || undefined,
         } : undefined,
-        yoga_styles: [],
-        teaching_locations: [],
-        student_count: undefined,
-        has_existing_insurance: false,
+        yoga_styles: userProfile?.yoga_styles || [],
+        teaching_locations: userProfile?.teaching_locations || [],
+        student_count: userProfile?.student_count || undefined,
+        has_existing_insurance: userProfile?.has_existing_insurance || false,
         current_page: currentPage,
       };
-      debugLog('Updating agent state', newState);
+      debugLog('Updating agent state with profile', newState);
       setState(newState);
     }
-  }, [user?.id, user?.name, user?.email, firstName, currentPage, setState]);
+  }, [user?.id, user?.name, user?.email, firstName, currentPage, userProfile, setState]);
 
-  // Update agent state when user session or page changes
+  // Update agent state when user session, page, or profile changes
   useEffect(() => {
     updateState();
   }, [updateState]);
