@@ -63,6 +63,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  appleWebApp: {
+    title: "Yoga Teacher Insurance UK",
+    capable: true,
+    statusBarStyle: "black-translucent",
+  },
+  // Icons auto-detected from app/ folder: favicon.ico, icon.png, icon.svg, apple-icon.png
 }
 
 const organizationJsonLd = {
@@ -76,8 +82,18 @@ const organizationJsonLd = {
   inLanguage: "en-GB",
   publisher: {
     "@type": "Organization",
+    "@id": "https://yogateacherinsurance.quest/#organization",
     name: "Yoga Teacher Insurance UK",
-    url: "https://yogateacherinsurance.quest"
+    url: "https://yogateacherinsurance.quest",
+    logo: {
+      "@type": "ImageObject",
+      "@id": "https://yogateacherinsurance.quest/#logo",
+      url: "https://yogateacherinsurance.quest/icon.svg",
+      contentUrl: "https://yogateacherinsurance.quest/icon.svg",
+      width: 512,
+      height: 512,
+      caption: "Yoga Teacher Insurance UK"
+    }
   }
 }
 
