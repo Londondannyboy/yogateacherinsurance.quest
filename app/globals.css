@@ -34,3 +34,25 @@ details summary::marker {
   z-index: 9998 !important;
   pointer-events: auto !important;
 }
+
+/* Fix CopilotKit sidebar overlay blocking clicks when closed */
+[data-copilotkit-sidebar][data-state="closed"] ~ *,
+.copilotKitSidebar[data-state="closed"] ~ * {
+  pointer-events: auto !important;
+}
+
+/* Ensure main content is always clickable */
+main {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Fix any potential overlay issues */
+[data-copilotkit-overlay] {
+  pointer-events: none !important;
+}
+
+[data-copilotkit-overlay][data-state="open"] {
+  pointer-events: auto !important;
+}

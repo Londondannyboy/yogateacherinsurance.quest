@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { CopilotKit, useCoAgent } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
@@ -64,7 +64,7 @@ function getInitialMessage(pathname: string, firstName: string | null): string {
   return `${name} I'm your yoga teacher insurance advisor. I can help you understand what coverage you need, compare UK providers, and explain different insurance types.\n\nWhat would you like to know?`;
 }
 
-// Component that syncs user state to agent
+// Component that syncs user state to agent - optimized to prevent re-render loops
 function UserStateSync() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
@@ -72,39 +72,48 @@ function UserStateSync() {
   const pathname = usePathname();
   const currentPage = getPageContext(pathname);
 
+  // Track previous values to prevent unnecessary updates
+  const prevStateRef = useRef<string>('');
+
   const { setState } = useCoAgent<AgentState>({
     name: 'yoga_agent',
     initialState: {
-      user: user ? {
-        id: user.id,
-        name: user.name || undefined,
-        firstName: firstName,
-        email: user.email || undefined,
-      } : undefined,
+      user: undefined,
       yoga_styles: [],
       teaching_locations: [],
       student_count: undefined,
       has_existing_insurance: false,
-      current_page: currentPage,
+      current_page: 'homepage',
     },
   });
 
+  // Memoize the state update to prevent unnecessary re-renders
+  const updateState = useCallback(() => {
+    const stateKey = `${user?.id || ''}-${user?.name || ''}-${currentPage}`;
+
+    // Only update if state actually changed
+    if (stateKey !== prevStateRef.current) {
+      prevStateRef.current = stateKey;
+      setState({
+        user: user ? {
+          id: user.id,
+          name: user.name || undefined,
+          firstName: firstName,
+          email: user.email || undefined,
+        } : undefined,
+        yoga_styles: [],
+        teaching_locations: [],
+        student_count: undefined,
+        has_existing_insurance: false,
+        current_page: currentPage,
+      });
+    }
+  }, [user?.id, user?.name, user?.email, firstName, currentPage, setState]);
+
   // Update agent state when user session or page changes
   useEffect(() => {
-    setState({
-      user: user ? {
-        id: user.id,
-        name: user.name || undefined,
-        firstName: firstName,
-        email: user.email || undefined,
-      } : undefined,
-      yoga_styles: [],
-      teaching_locations: [],
-      student_count: undefined,
-      has_existing_insurance: false,
-      current_page: currentPage,
-    });
-  }, [user?.id, user?.name, user?.email, firstName, currentPage, setState]);
+    updateState();
+  }, [updateState]);
 
   return null;
 }
