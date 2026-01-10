@@ -8,6 +8,15 @@ import { NeonAuthUIProvider } from '@neondatabase/auth/react/ui';
 import { authClient } from '@/lib/auth/client';
 import '@copilotkit/react-ui/styles.css';
 
+// Debug flag - set to true to enable console logging
+const DEBUG_COPILOTKIT = true;
+
+function debugLog(message: string, data?: any) {
+  if (DEBUG_COPILOTKIT) {
+    console.log(`[CopilotKit Debug] ${message}`, data || '');
+  }
+}
+
 // Type matching the agent's AppState in agent.py
 type AgentState = {
   user?: {
@@ -75,7 +84,9 @@ function UserStateSync() {
   // Track previous values to prevent unnecessary updates
   const prevStateRef = useRef<string>('');
 
-  const { setState } = useCoAgent<AgentState>({
+  debugLog('UserStateSync render', { user: user?.name, currentPage });
+
+  const { state, setState } = useCoAgent<AgentState>({
     name: 'yoga_agent',
     initialState: {
       user: undefined,
@@ -87,6 +98,8 @@ function UserStateSync() {
     },
   });
 
+  debugLog('useCoAgent state', state);
+
   // Memoize the state update to prevent unnecessary re-renders
   const updateState = useCallback(() => {
     const stateKey = `${user?.id || ''}-${user?.name || ''}-${currentPage}`;
@@ -94,7 +107,7 @@ function UserStateSync() {
     // Only update if state actually changed
     if (stateKey !== prevStateRef.current) {
       prevStateRef.current = stateKey;
-      setState({
+      const newState = {
         user: user ? {
           id: user.id,
           name: user.name || undefined,
@@ -106,7 +119,9 @@ function UserStateSync() {
         student_count: undefined,
         has_existing_insurance: false,
         current_page: currentPage,
-      });
+      };
+      debugLog('Updating agent state', newState);
+      setState(newState);
     }
   }, [user?.id, user?.name, user?.email, firstName, currentPage, setState]);
 
@@ -124,8 +139,18 @@ function CopilotWrapper({ children }: { children: React.ReactNode }) {
   const firstName = user?.name?.split(' ')[0] || null;
   const pathname = usePathname();
 
+  debugLog('CopilotWrapper render', {
+    runtimeUrl: '/api/copilotkit',
+    agent: 'yoga_agent',
+    user: user?.name,
+    pathname
+  });
+
   return (
-    <CopilotKit runtimeUrl="/api/copilotkit" agent="yoga_agent">
+    <CopilotKit
+      runtimeUrl="/api/copilotkit"
+      agent="yoga_agent"
+    >
       {/* Sync user state to agent */}
       <UserStateSync />
       <CopilotSidebar
