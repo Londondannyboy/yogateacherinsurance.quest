@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     description: "Protect your aerial yoga practice with specialist insurance. Coverage for falls, equipment failure, and student injuries from £28/month.",
     type: "website",
     url: "https://yogateacherinsurance.quest/aerial-yoga-insurance",
+    siteName: "Yoga Teacher Insurance UK",
+    locale: "en_GB",
   },
 }
 
