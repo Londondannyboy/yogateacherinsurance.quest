@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { QuoteCalculator } from '@/components/QuoteCalculator'
 import { HeroVoice } from '@/components/HeroVoice'
+import { Yoga3DFigure } from '@/components/Yoga3DFigure'
 
 export const metadata: Metadata = {
   title: 'Yoga Teacher Insurance UK 2026 | Compare Quotes from £15/month',
@@ -90,43 +91,49 @@ export default function HomePage() {
       />
 
       {/* Hero Section with Yoga Background */}
-      <section className="relative py-24 sm:py-32 px-4 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&h=1080&crop=entropy"
-            alt="Peaceful yoga practice meditation morning mindfulness wellness"
-            className="w-full h-full object-cover"
-          />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/75 to-slate-900/60"></div>
+      <section className="relative py-16 sm:py-24 px-4 overflow-hidden min-h-[80vh]">
+        {/* Animated Background Gradient */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent"></div>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6 leading-tight">
-            Protect Your Practice
-            <span className="block bg-gradient-to-r from-blue-300 to-blue-400 bg-clip-text text-transparent mt-2">with Peace of Mind</span>
-          </h1>
-          <p className="text-xl text-slate-100 mb-4 font-light">
-            Comprehensive yoga teacher insurance from specialist UK providers
-          </p>
-          <p className="text-lg text-slate-200 mb-8">
-            Get <strong>professional indemnity & public liability insurance</strong> for yoga instructors, trainers & studio owners.
-          </p>
-          <p className="text-sm text-slate-300 mb-6">
-            <strong>Yoga teacher insurance from £15/month</strong> • Compare quotes in minutes • Get instant coverage
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 text-sm text-slate-200 mb-10">
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Professional Indemnity</span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Public Liability</span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Yoga Alliance</span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Studio Insurance</span>
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Meditation Teachers</span>
-          </div>
+        {/* Content Grid */}
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Text Content */}
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                Protect Your Practice
+                <span className="block bg-gradient-to-r from-blue-300 to-blue-400 bg-clip-text text-transparent mt-2">with Peace of Mind</span>
+              </h1>
+              <p className="text-xl text-slate-100 mb-4 font-light">
+                Comprehensive yoga teacher insurance from specialist UK providers
+              </p>
+              <p className="text-lg text-slate-200 mb-6">
+                Get <strong>professional indemnity & public liability insurance</strong> for yoga instructors, trainers & studio owners.
+              </p>
+              <p className="text-sm text-slate-300 mb-6">
+                <strong>Yoga teacher insurance from £15/month</strong> • Compare quotes in minutes • Get instant coverage
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 text-sm text-slate-200 mb-8">
+                <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Professional Indemnity</span>
+                <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Public Liability</span>
+                <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Yoga Alliance</span>
+                <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">Studio Insurance</span>
+              </div>
 
-          {/* Voice Assistant */}
-          <HeroVoice />
+              {/* Voice Assistant */}
+              <div className="flex justify-center lg:justify-start">
+                <HeroVoice />
+              </div>
+            </div>
+
+            {/* 3D Figure */}
+            <div className="hidden lg:block">
+              <Yoga3DFigure />
+            </div>
+          </div>
         </div>
       </section>
 
