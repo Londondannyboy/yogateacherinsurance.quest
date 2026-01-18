@@ -66,6 +66,17 @@ export default function BestProvidersPage() {
         </div>
       </section>
 
+      {/* Comparison Site Disclaimer */}
+      <section className="py-6 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+            <p className="text-blue-400 text-sm text-center">
+              <span className="font-semibold">Comparison Site</span> — We are an independent comparison site. All prices shown are provisional indications only. We are not affiliated with these providers. Verify details and final pricing directly with insurers. Check providers are authorised by the <a href="https://www.fca.org.uk/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-300">FCA</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Trust This Guide */}
       <section className="py-16 px-4 bg-slate-800/50">
         <div className="max-w-4xl mx-auto">

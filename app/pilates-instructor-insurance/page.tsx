@@ -15,8 +15,15 @@ export default function Page() {
       <article className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Pilates Instructor Insurance UK | Specialist Coverage</h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Pilates instructors require specialized professional liability insurance to protect against injury claims and equipment-related accidents. This guide explains pilates-specific coverage, pricing, and how to find the best insurance for your pilates teaching.
+          <a href="https://en.wikipedia.org/wiki/Pilates" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Pilates</a> instructors require specialized professional liability insurance to protect against injury claims and equipment-related accidents. This guide explains pilates-specific coverage, pricing, and how to find the best insurance for your pilates teaching.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

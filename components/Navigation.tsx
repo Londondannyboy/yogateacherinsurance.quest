@@ -19,12 +19,14 @@ export function Navigation() {
 
   // Insurance types for dropdown
   const insuranceTypes = [
+    { href: '/yoga-instructor-insurance-uk', label: 'Yoga Instructor', icon: '🧘‍♀️' },
     { href: '/aerial-yoga-insurance', label: 'Aerial Yoga', icon: '🎪' },
     { href: '/hot-yoga-insurance', label: 'Hot Yoga', icon: '🔥' },
     { href: '/meditation-teacher-insurance', label: 'Meditation', icon: '🧘' },
     { href: '/yoga-studio-insurance', label: 'Studio Insurance', icon: '🏠' },
     { href: '/public-liability-insurance-yoga-teachers', label: 'Public Liability', icon: '🛡️' },
     { href: '/pilates-instructor-insurance', label: 'Pilates', icon: '💪' },
+    { href: '/how-much-yoga-teacher-insurance-cost', label: 'Insurance Costs', icon: '💷' },
   ]
 
   return (

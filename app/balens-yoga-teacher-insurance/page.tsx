@@ -15,6 +15,13 @@ export default function Page() {
       <article className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Balens Yoga Teacher Insurance | Top UK Provider</h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. All prices shown are provisional indications. Verify details and final pricing directly with providers. We are not affiliated with Balens.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
           Balens is one of the UK's most established and recommended yoga teacher insurance providers. This guide explains their coverage, pricing, and why Balens is the top choice for many UK yoga professionals.
         </p>

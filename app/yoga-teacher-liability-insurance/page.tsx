@@ -17,8 +17,15 @@ export default function Page() {
           Yoga Teacher Liability Insurance UK
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. All prices shown are provisional indications. Verify details and final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Professional liability insurance protects yoga teachers from claims of negligence or poor instruction. Combined with public liability coverage for student injury and property damage, comprehensive liability insurance is essential for any yoga professional.
+          Professional liability insurance protects yoga teachers from claims of negligence or poor instruction. Combined with <a href="https://en.wikipedia.org/wiki/Public_liability" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">public liability coverage</a> for student injury and property damage, comprehensive liability insurance is essential for any yoga professional.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

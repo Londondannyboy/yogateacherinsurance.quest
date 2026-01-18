@@ -4,9 +4,18 @@ import { HeroVoice } from '@/components/HeroVoice'
 
 export const metadata: Metadata = {
   title: 'Yoga Teacher Insurance UK 2026 | Compare Quotes from £15/month',
-  description: 'Yoga teacher insurance UK - compare quotes from specialist providers. Professional indemnity & public liability insurance for yoga instructors, trainers, meditation teachers & studio owners. Affordable coverage from leading UK insurers.',
+  description: 'Yoga teacher insurance UK from £15/month. Compare yoga instructor insurance quotes for professional indemnity & public liability cover. Insurance for yoga teachers, trainee instructors & studio owners. Cheapest yoga teacher insurance comparison from specialist UK providers.',
+  keywords: 'yoga teacher insurance, yoga teacher insurance uk, yoga instructor insurance, insurance for yoga teachers, yoga instructor insurance uk, yoga teacher insurance cost, cheapest yoga teacher insurance, affordable yoga insurance, yoga trainer insurance, yoga teaching insurance uk',
   alternates: {
     canonical: 'https://yogateacherinsurance.quest',
+  },
+  openGraph: {
+    title: 'Yoga Teacher Insurance UK 2026 | Compare Quotes from £15/month',
+    description: 'Compare yoga teacher insurance UK quotes from specialist providers. Professional indemnity & public liability insurance for yoga instructors from £15/month.',
+    type: 'website',
+    url: 'https://yogateacherinsurance.quest',
+    siteName: 'Yoga Teacher Insurance UK',
+    locale: 'en_GB',
   },
 }
 
@@ -133,6 +142,14 @@ export default function HomePage() {
       {/* Quote Calculator Section */}
       <section id="calculator" className="py-8 px-4">
         <QuoteCalculator />
+        {/* Comparison Site Disclaimer */}
+        <div className="max-w-4xl mx-auto mt-6">
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3">
+            <p className="text-blue-400 text-sm text-center">
+              <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Actual premiums vary based on individual circumstances. Verify final pricing directly with insurance providers. We help you compare and find suitable cover.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Why Insurance Section with Yoga Background */}
@@ -781,7 +798,7 @@ export default function HomePage() {
 
           <div className="mt-8 text-center">
             <p className="text-slate-400 text-sm">
-              Looking for <strong>cheap yoga insurance</strong> or <strong>affordable yoga instructor insurance</strong>?
+              Looking for <strong>cheap yoga insurance</strong> or <strong><a href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">affordable yoga instructor insurance</a></strong>?
               Compare quotes from UK yoga insurance companies and find the cheapest yoga teacher insurance that meets your needs.
             </p>
           </div>

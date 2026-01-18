@@ -2,10 +2,19 @@ import Link from "next/link"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Yoga Alliance UK Insurance | Professional Requirements 2026",
-  description: "Insurance for Yoga Alliance UK registered members. Professional indemnity requirements for RYA members and yoga teachers.",
+  title: "Yoga Alliance Insurance UK 2026 | RYA Member Insurance Requirements",
+  description: "Yoga Alliance insurance UK - professional indemnity & public liability insurance for Yoga Alliance registered members. Yoga Alliance Professionals insurance requirements. Get insurance quotes for RYA members from £15/month.",
+  keywords: "yoga alliance insurance, yoga alliance insurance uk, yoga alliance professionals insurance, yoga teacher insurance yoga alliance, rya insurance, yoga alliance member insurance, yoga alliance uk insurance requirements",
   alternates: {
     canonical: "https://yogateacherinsurance.quest/yoga-alliance-insurance-uk",
+  },
+  openGraph: {
+    title: "Yoga Alliance Insurance UK | RYA Member Requirements 2026",
+    description: "Insurance for Yoga Alliance UK registered members. Professional indemnity & public liability requirements for RYA members.",
+    type: "website",
+    url: "https://yogateacherinsurance.quest/yoga-alliance-insurance-uk",
+    siteName: "Yoga Teacher Insurance UK",
+    locale: "en_GB",
   },
 }
 

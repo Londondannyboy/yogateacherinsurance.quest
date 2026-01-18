@@ -17,8 +17,15 @@ export default function Page() {
           Trainee Yoga Teacher Insurance UK | Student Coverage
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. All prices shown are provisional indications. Verify details and final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          If you're completing a yoga teacher training certification, you'll likely need professional indemnity insurance for supervised teaching practice. This guide explains trainee insurance requirements, affordable coverage options, and how training programs can help you get insured.
+          If you're completing a yoga teacher training certification, you'll likely need <a href="https://en.wikipedia.org/wiki/Professional_liability_insurance" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">professional indemnity insurance</a> for supervised teaching practice. This guide explains trainee insurance requirements, affordable coverage options, and how training programs can help you get insured.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-green-500/20">

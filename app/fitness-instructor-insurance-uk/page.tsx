@@ -15,8 +15,15 @@ export default function Page() {
       <article className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Fitness Instructor Insurance UK | Professional Coverage</h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Whether you teach yoga, pilates, group fitness, personal training, or combinations thereof, professional liability insurance is essential. This comprehensive guide covers insurance requirements for all UK fitness professionals and how to find affordable coverage.
+          Whether you teach <Link href="/" className="text-blue-400 hover:text-blue-300">yoga</Link>, <Link href="/pilates-instructor-insurance" className="text-blue-400 hover:text-blue-300">pilates</Link>, group fitness, personal training, or combinations thereof, professional liability insurance is essential. The <a href="https://www.hse.gov.uk/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Health and Safety Executive (HSE)</a> provides guidance on managing risks in fitness environments. This guide covers insurance requirements for all UK fitness professionals.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

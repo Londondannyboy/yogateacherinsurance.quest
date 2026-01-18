@@ -6,7 +6,7 @@ import { AerialYogaHero } from "@/components/AerialYogaHero"
 export const metadata: Metadata = {
   title: "Aerial Yoga Insurance UK 2026 | Equipment & Fall Protection Coverage",
   description: "Specialist aerial yoga insurance for UK instructors. Complete coverage for suspension equipment, fall risks, rigging liability & student injuries. Get quotes from £28/month with our calculator.",
-  keywords: "aerial yoga insurance UK, aerial yoga insurance cost, suspended yoga insurance, flying yoga insurance, aerial silks insurance, aerial hammock insurance, equipment liability insurance",
+  keywords: "aerial yoga insurance, aerial yoga insurance uk, aerial yoga teacher insurance, aerial yoga insurance cost, suspended yoga insurance, flying yoga insurance, aerial silks insurance, aerial hammock insurance, equipment liability insurance, aerial rig insurance",
   alternates: {
     canonical: "https://yogateacherinsurance.quest/aerial-yoga-insurance",
   },
@@ -31,15 +31,15 @@ export default function Page() {
         {/* Comparison Site Disclaimer */}
         <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
           <p className="text-blue-400 text-sm text-center">
-            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. Verify details directly with providers.
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
           </p>
         </div>
 
         {/* Introduction */}
         <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Aerial yoga (suspended yoga, flying yoga, anti-gravity yoga) is the highest-risk yoga discipline and requires premium specialized insurance coverage.
+          <a href="https://en.wikipedia.org/wiki/Aerial_yoga" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:text-red-300">Aerial yoga</a> (suspended yoga, flying yoga, anti-gravity yoga) is the highest-risk yoga discipline and requires premium specialized insurance coverage. The <a href="https://www.hse.gov.uk/entertainment/theatre-arts/aerial-performance.htm" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">HSE provides guidance on aerial performance safety</a>.
 
-          <span className="block mt-4">This comprehensive 2026 guide explains equipment liability, fall protection, safety protocols, coverage needs, and why aerial yoga insurance costs significantly more than standard yoga insurance.</span>
+          <span className="block mt-4">This comprehensive 2026 guide explains equipment liability, fall protection, safety protocols, coverage needs, and why aerial yoga insurance costs significantly more than <Link href="/" className="text-blue-400 hover:text-blue-300">standard yoga insurance</Link>. See also our <Link href="/how-much-yoga-teacher-insurance-cost" className="text-blue-400 hover:text-blue-300">pricing guide</Link> and <Link href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">yoga instructor insurance</Link>.</span>
 
           <span className="block mt-4">Use our calculator below to get instant premium estimates.</span>
         </p>

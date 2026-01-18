@@ -35,14 +35,14 @@ export default function Page() {
         {/* Comparison Site Disclaimer */}
         <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
           <p className="text-blue-400 text-sm text-center">
-            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. Verify details directly with providers.
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
           </p>
         </div>
 
         <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Public liability insurance is the most essential coverage for yoga teachers in the UK. It protects you if a student is injured during your class or if you accidentally damage property.
+          <a href="https://en.wikipedia.org/wiki/Public_liability" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Public liability insurance</a> is the most essential coverage for yoga teachers in the UK. It protects you if a student is injured during your class or if you accidentally damage property. According to <a href="https://www.gov.uk/business-insurance" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Gov.uk</a>, while not legally mandatory, public liability insurance is highly recommended for businesses interacting with the public.
 
-          <span className="block mt-4">Most yoga studios, gyms, and community venues require teachers to have public liability insurance before they can teach on their premises.</span>
+          <span className="block mt-4">Most yoga studios, gyms, and community venues require teachers to have public liability insurance before they can teach on their premises. See our <Link href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">yoga instructor insurance guide</Link> and <Link href="/how-much-yoga-teacher-insurance-cost" className="text-blue-400 hover:text-blue-300">pricing breakdown</Link> for more details.</span>
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

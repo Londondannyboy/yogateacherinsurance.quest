@@ -15,8 +15,15 @@ export default function Page() {
       <article className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">Group Fitness Instructor Insurance UK | Class Coverage</h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Group fitness instructors leading classes in gyms, studios, and fitness centers need professional liability insurance to protect against student injury claims. This guide covers insurance needs, costs, and coverage options for group fitness professionals.
+          Group fitness instructors leading classes in gyms, studios, and fitness centers need professional liability insurance to protect against student injury claims. This guide covers insurance needs, costs, and coverage options for group fitness professionals. See also our <Link href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">yoga instructor insurance</Link> and <Link href="/pilates-instructor-insurance" className="text-blue-400 hover:text-blue-300">pilates insurance</Link> guides.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

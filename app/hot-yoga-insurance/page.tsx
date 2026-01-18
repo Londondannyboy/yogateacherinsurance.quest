@@ -3,10 +3,19 @@ import { Metadata } from "next"
 import { PageHero } from "@/components/PageHero"
 
 export const metadata: Metadata = {
-  title: "Hot Yoga Insurance UK | Specialized Coverage 2026",
-  description: "Hot yoga insurance for UK instructors. Comprehensive coverage for heated yoga classes, Bikram yoga, and thermal conditions. Get quotes from specialists.",
+  title: "Hot Yoga Insurance UK 2026 | Bikram & Heated Yoga Coverage from £22/month",
+  description: "Hot yoga insurance UK from £22/month. Specialist coverage for hot yoga teachers, Bikram yoga instructors & heated yoga classes. Professional indemnity & public liability for thermal conditions. Compare hot yoga insurance quotes.",
+  keywords: "hot yoga insurance, hot yoga insurance uk, bikram yoga insurance, heated yoga insurance, hot yoga teacher insurance, hot yoga instructor insurance, thermal yoga coverage",
   alternates: {
     canonical: "https://yogateacherinsurance.quest/hot-yoga-insurance",
+  },
+  openGraph: {
+    title: "Hot Yoga Insurance UK | Specialist Heated Yoga Coverage",
+    description: "Hot yoga insurance for UK teachers from £22/month. Specialist coverage for Bikram yoga, heated yoga classes & thermal conditions.",
+    type: "website",
+    url: "https://yogateacherinsurance.quest/hot-yoga-insurance",
+    siteName: "Yoga Teacher Insurance UK",
+    locale: "en_GB",
   },
 }
 
@@ -23,10 +32,17 @@ export default function Page() {
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">
-        <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Hot yoga and heated yoga classes carry increased liability risks due to the heated environment, dehydration concerns, and higher injury potential.
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
+          </p>
+        </div>
 
-          <span className="block mt-4">This guide explains why hot yoga requires specialized insurance, what coverage you need, and how to get the best rates.</span>
+        <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+          <a href="https://en.wikipedia.org/wiki/Hot_yoga" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300">Hot yoga</a> and heated yoga classes carry increased liability risks due to the heated environment, dehydration concerns, and higher injury potential. The <a href="https://www.nhs.uk/live-well/exercise/running-and-aerobic-exercises/yoga/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">NHS guidance on yoga</a> highlights the importance of proper hydration in heated environments.
+
+          <span className="block mt-4">This guide explains why hot yoga requires specialized insurance, what coverage you need, and how to get the best rates. See also our guides on <Link href="/how-much-yoga-teacher-insurance-cost" className="text-blue-400 hover:text-blue-300">yoga insurance costs</Link> and <Link href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">yoga instructor insurance</Link>.</span>
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-orange-500/20">

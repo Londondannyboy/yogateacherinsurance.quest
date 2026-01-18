@@ -2,10 +2,19 @@ import Link from "next/link"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Compare Yoga Teacher Insurance UK | Best Quotes 2026',
-  description: 'Compare yoga teacher insurance quotes from Yoga Alliance, Balens, and specialist UK providers. Find the best coverage at the best price. Professional indemnity and public liability insurance.',
+  title: 'Compare Yoga Teacher Insurance UK 2026 | Best Yoga Insurance Comparison',
+  description: 'Yoga teacher insurance UK comparison - compare quotes from top UK providers. Best yoga teacher insurance comparison 2026. Yoga insurance comparison for professional indemnity & public liability. Find the cheapest yoga instructor insurance.',
+  keywords: 'yoga insurance comparison, yoga teacher insurance uk comparison, best yoga teacher insurance uk comparison, compare yoga teacher insurance, yoga teacher insurance comparison, best yoga insurance uk, yoga instructor insurance comparison',
   alternates: {
     canonical: 'https://yogateacherinsurance.quest/compare-yoga-teacher-insurance-uk',
+  },
+  openGraph: {
+    title: 'Compare Yoga Teacher Insurance UK | Best Quotes 2026',
+    description: 'Compare yoga teacher insurance UK - find the best coverage at the best price. Professional indemnity and public liability insurance comparison.',
+    type: 'website',
+    url: 'https://yogateacherinsurance.quest/compare-yoga-teacher-insurance-uk',
+    siteName: 'Yoga Teacher Insurance UK',
+    locale: 'en_GB',
   },
 }
 
@@ -17,8 +26,15 @@ export default function Page() {
           Compare Yoga Teacher Insurance UK
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications. Verify details and final pricing directly with providers. Ensure your chosen provider is authorised by the <a href="https://www.fca.org.uk/" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 underline">FCA</a>.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Compare professional indemnity and public liability insurance quotes from the UK's leading yoga teacher insurance specialists. Find the best coverage at the best price.
+          Compare <a href="https://en.wikipedia.org/wiki/Professional_liability_insurance" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">professional indemnity</a> and <a href="https://en.wikipedia.org/wiki/Public_liability" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">public liability</a> insurance quotes from the UK's leading yoga teacher insurance specialists. Find the best coverage at the best price.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

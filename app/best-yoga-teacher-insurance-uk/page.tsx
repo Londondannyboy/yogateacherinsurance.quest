@@ -17,8 +17,15 @@ export default function Page() {
           Best Yoga Teacher Insurance UK | Top Providers 2026
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. All prices shown are provisional indications. Verify details and final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Choosing the right yoga teacher insurance provider is essential for protecting your business and reputation. This guide compares the top UK specialist insurers, their coverage options, pricing, and customer reviews to help you find the best policy for your teaching practice.
+          Choosing the right yoga teacher insurance provider is essential for protecting your business and reputation. This guide compares the top UK specialist insurers, their coverage options, pricing, and customer reviews to help you find the best policy for your teaching practice. All insurance providers should be regulated by the <a href="https://www.fca.org.uk/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Financial Conduct Authority (FCA)</a>.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

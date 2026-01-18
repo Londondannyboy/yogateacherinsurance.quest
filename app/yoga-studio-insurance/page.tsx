@@ -35,14 +35,14 @@ export default function Page() {
         {/* Comparison Site Disclaimer */}
         <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
           <p className="text-blue-400 text-sm text-center">
-            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. Verify details directly with providers.
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
           </p>
         </div>
 
         <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Yoga studio owners need more comprehensive insurance than individual teachers. Studio insurance covers your business premises, equipment, multiple instructors, and increased student liability.
+          Yoga studio owners need more comprehensive insurance than <Link href="/yoga-instructor-insurance-uk" className="text-blue-400 hover:text-blue-300">individual instructors</Link>. Studio insurance covers your business premises, equipment, multiple instructors, and increased student liability. The <a href="https://www.hse.gov.uk/simple-health-safety/risk/index.htm" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">HSE risk assessment guidance</a> is essential reading for studio owners.
 
-          <span className="block mt-4">Whether you own a dedicated yoga centre, rent studio space, or operate a multi-purpose wellness facility, the right insurance protects your investment and livelihood.</span>
+          <span className="block mt-4">Whether you own a dedicated yoga centre, rent studio space, or operate a multi-purpose wellness facility, the right insurance protects your investment and livelihood. See also our <Link href="/public-liability-insurance-yoga-teachers" className="text-blue-400 hover:text-blue-300">public liability guide</Link> and <Link href="/how-much-yoga-teacher-insurance-cost" className="text-blue-400 hover:text-blue-300">insurance costs breakdown</Link>.</span>
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-green-500/20">

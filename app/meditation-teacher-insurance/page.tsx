@@ -35,14 +35,14 @@ export default function Page() {
         {/* Comparison Site Disclaimer */}
         <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
           <p className="text-blue-400 text-sm text-center">
-            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. Verify details directly with providers.
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Verify final pricing directly with providers.
           </p>
         </div>
 
         <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Meditation teachers, mindfulness instructors, and breathwork practitioners need specialist insurance to protect their practice and students.
+          <a href="https://en.wikipedia.org/wiki/Meditation" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">Meditation</a> teachers, <a href="https://en.wikipedia.org/wiki/Mindfulness" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">mindfulness</a> instructors, and breathwork practitioners need specialist insurance to protect their practice and students. The <a href="https://www.nhs.uk/mental-health/self-help/tips-and-support/mindfulness/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">NHS recognises mindfulness</a> as a beneficial practice for mental wellbeing.
 
-          <span className="block mt-4">Whether you teach guided meditation, mindfulness-based stress reduction (MBSR), pranayama, or breathwork, professional insurance is essential for protecting yourself against claims.</span>
+          <span className="block mt-4">Whether you teach guided meditation, mindfulness-based stress reduction (MBSR), pranayama, or breathwork, professional insurance is essential for protecting yourself against claims. See our <Link href="/" className="text-blue-400 hover:text-blue-300">yoga teacher insurance guide</Link> and <Link href="/how-much-yoga-teacher-insurance-cost" className="text-blue-400 hover:text-blue-300">pricing breakdown</Link>.</span>
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-purple-500/20">

@@ -2,10 +2,19 @@ import Link from "next/link"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "How Much Does Yoga Teacher Insurance Cost? | 2026 Pricing Guide",
-  description: "Complete yoga teacher insurance cost breakdown 2026. Pricing from £15-£38/month by experience level, teaching style, and coverage options. Get free quotes.",
+  title: "How Much Does Yoga Teacher Insurance Cost UK 2026? | £15-£38/month",
+  description: "How much is yoga teacher insurance? Yoga teacher insurance cost UK from £15-£38/month. Cheapest yoga teacher insurance comparison. Affordable yoga insurance pricing by experience level, yoga style & coverage. Get free quotes.",
+  keywords: "how much is yoga teacher insurance, how much does yoga teacher insurance cost, yoga teacher insurance cost, yoga insurance cost, cheapest yoga teacher insurance, affordable yoga insurance, yoga teacher insurance pricing, yoga insurance uk cost",
   alternates: {
     canonical: "https://yogateacherinsurance.quest/how-much-yoga-teacher-insurance-cost",
+  },
+  openGraph: {
+    title: "How Much Does Yoga Teacher Insurance Cost? | 2026 UK Pricing Guide",
+    description: "Yoga teacher insurance costs £15-£38/month in the UK. Complete breakdown by experience, yoga style & coverage options.",
+    type: "website",
+    url: "https://yogateacherinsurance.quest/how-much-yoga-teacher-insurance-cost",
+    siteName: "Yoga Teacher Insurance UK",
+    locale: "en_GB",
   },
 }
 
@@ -17,8 +26,15 @@ export default function Page() {
           How Much Does Yoga Teacher Insurance Cost? 2026 Pricing Guide
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — All prices shown are provisional indications only. Actual premiums vary based on individual circumstances. Verify final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
-          Yoga teacher insurance costs between £15-£38 per month depending on your experience level, teaching style, student numbers, and coverage options. This comprehensive guide breaks down pricing, explains what affects your premium, and shows you how to get the best deal.
+          Yoga teacher insurance costs between £15-£38 per month depending on your experience level, teaching style, student numbers, and coverage options. This comprehensive guide breaks down pricing, explains what affects your premium, and shows you how to get the best deal. For general guidance on business insurance, see <a href="https://www.gov.uk/business-insurance" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Gov.uk</a>.
         </p>
 
         <div className="relative h-64 md:h-72 rounded-xl overflow-hidden mb-8 border border-blue-500/20">

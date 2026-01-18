@@ -17,6 +17,13 @@ export default function Page() {
           Yoga Teacher Training Insurance
         </h1>
 
+        {/* Comparison Site Disclaimer */}
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 mb-8">
+          <p className="text-blue-400 text-sm text-center">
+            <span className="font-semibold">Comparison Site</span> — We help you find suitable cover. All prices shown are provisional indications. Verify details and final pricing directly with providers.
+          </p>
+        </div>
+
         <p className="text-lg text-slate-400 mb-8">
           Professional indemnity insurance is essential for yoga trainees and students completing their certification. Many yoga teacher training programs require trainees to carry insurance while teaching as part of their learning experience. Get affordable coverage specifically designed for trainees entering the profession.
         </p>
